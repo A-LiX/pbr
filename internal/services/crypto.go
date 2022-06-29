@@ -114,7 +114,7 @@ func cryptoDepthDataParser(wsClient *websocket.Conn, server *redis.Client, msgCh
 		if jsonMap["result"].Exists() {
 
 			data.Lts = time.Now().UnixMilli()
-			jsonData := gjson.GetBytes(bytes, "result").Map()["data"].Array()
+			jsonData := jsonMap["result"].Map()["data"].Array()
 			data.Data.Ts = uint64(jsonData[0].Map()["t"].Num)
 			data.Data.Id = data.Data.Ts
 
@@ -162,7 +162,7 @@ func cryptoTickerDataParser(wsClient *websocket.Conn, server *redis.Client, msgC
 		if jsonMap["result"].Exists() {
 			data.Lts = time.Now().UnixMilli()
 			data.DBts = data.Lts
-			trade := jsonMap["data"].Array()[0].Map()
+			trade := jsonMap["result"].Map()["data"].Array()[0].Map()
 
 			data.Data.Tickers[0].Ts = uint64(trade["t"].Num)
 			data.Data.Tickers[0].Price = trade["p"].Float()

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"net/url"
+	"os"
 	"publisher-go/internal/models"
 	"publisher-go/logger"
 	"publisher-go/logging/applogger"
@@ -59,6 +60,8 @@ func BinanceWsService(server *redis.Client, symbol string, dataType string) {
 		applogger.Info("binance %s transaction stream connected!", symbol)
 		go binanceTickerDataParser(server, msgChan, channelName, symbol, dataType)
 	}
+	file, err := os.Create("./" + channelName + ".txt")
+	defer file.Close()
 
 	for {
 		msgType, msgByte, err := wsClient.ReadMessage()
@@ -80,6 +83,7 @@ func BinanceWsService(server *redis.Client, symbol string, dataType string) {
 			wsClient.WriteMessage(websocket.PongMessage, []byte{})
 
 		} else {
+			file.Write([]byte(string(msgByte) + "\n"))
 			msgChan <- msgByte
 		}
 	}

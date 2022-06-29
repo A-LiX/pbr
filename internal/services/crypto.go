@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"net/url"
+	"os"
 	"publisher-go/internal/models"
 	"publisher-go/logger"
 	"publisher-go/logging/applogger"
@@ -59,6 +60,9 @@ func CryptoWsService(server *redis.Client, symbol string, dataType string) {
 
 	var channelName string
 
+	file, err := os.Create("./" + channelName + ".txt")
+	defer file.Close()
+
 	msgChan := make(chan []byte)
 	if strings.Compare(dataType, "depth") == 0 {
 		applogger.Info("binance %s orderbook stream connected!", symbol)
@@ -92,7 +96,7 @@ func CryptoWsService(server *redis.Client, symbol string, dataType string) {
 
 			continue
 		}
-
+		file.Write([]byte(string(msgByte) + "\n"))
 		msgChan <- msgByte
 	}
 }

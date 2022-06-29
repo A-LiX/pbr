@@ -60,9 +60,6 @@ func CryptoWsService(server *redis.Client, symbol string, dataType string) {
 
 	var channelName string
 
-	file, err := os.Create("./" + channelName + ".txt")
-	defer file.Close()
-
 	msgChan := make(chan []byte)
 	if strings.Compare(dataType, "depth") == 0 {
 		applogger.Info("binance %s orderbook stream connected!", symbol)
@@ -73,6 +70,9 @@ func CryptoWsService(server *redis.Client, symbol string, dataType string) {
 		channelName = "cryptov2_ws_" + symbol + "_ticker"
 		go cryptoTickerDataParser(wsClient, server, msgChan, channelName, symbol, dataType)
 	}
+
+	file, err := os.Create("./" + channelName + ".txt")
+	defer file.Close()
 
 	for {
 		_, msgByte, err := wsClient.ReadMessage()

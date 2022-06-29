@@ -1,2 +1,2 @@
-channels: ["crypto_ws_BTC_USDT_depth","crypto_ws_BTC_USDT_ticker","crypto_ws_ETH_USDT_depth","crypto_ws_ETH_USDT_depth","binance_ws_BTC_USDT_depth","binance_ws_BTC_USDT_ticker","binance_ws_ETH_USDT_depth","binance_ws_ETH_USDT_ticker"]
+channels: ["crypto_ws_BTC_USDT_depth","crypto_ws_BTC_USDT_ticker","crypto_ws_ETH_USDT_depth","crypto_ws_ETH_USDT_ticker","binance_ws_BTC_USDT_depth","binance_ws_BTC_USDT_ticker","binance_ws_ETH_USDT_depth","binance_ws_ETH_USDT_ticker"]
 log_level:  4
